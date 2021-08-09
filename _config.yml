@@ -1,0 +1,59 @@
+theme: jekyll-theme-minimal
+title: 'Advanced Topoics in Single Cell RNA-Seq Analysis: Trajectory and Velocity Analysis'
+show_downloads: True
+google_analytics: True
+navigation:
+  - title: Home
+    url: /
+
+  - heading: Introduction and Lectures
+  - title: Intro to the Workshop and Core
+    url: base/welcome
+  - title: Schedule
+    url: base/schedule
+
+  - heading: Support
+  - title: Using Slack in this workshop
+    url: base/slack
+  - title: Using Zoom in this workshop
+    url: base/zoom
+  - title: Cheat Sheets
+    url: base/cheatSheetIndex
+  - title: Software and Links
+    url: software_scripts/software
+  - title: Scripts
+    url: software_scripts/scripts_links
+
+  - heading: Prerequisites
+  - title: CLI
+    url: base/cli_prerequisites.md
+  - title: R
+    url: base/r_prerequisites.md
+  - title: More Materials
+    url: https://ucdavis-bioinformatics-training.github.io/2019-Winter-Bioinformatics_Command_Line_and_R_Prerequisites_Workshop/
+
+  - heading: Data Reduction
+  - title: Generating Expression Matrices
+    url: data_reduction/Expression_Matrix
+  - title: Expression project setup
+    url: data_reduction/project_setup_counting
+  - title: Velocity analysis
+    url:   data_reduction/Velocyto
+
+  - heading: Data analysis
+  - title: scRNA analysis prepare, part 2
+    url: data_analysis/scrna_analysis_prepare2_fixed
+  - title: Monocle
+    url: data_analysis/adv_scrnaseq_monocle
+  - title: VDJ T cell and B cell analysis
+    url: data_analysis/VDJ_Analysis_fixed
+  - title: Velocity  analysis
+    url:  data_analysis/Velocyto_fixed
+
+  - heading: ETC
+  - title: Closing thoughts
+    url: base/closing
+  - title: Github page
+    url: https://github.com/ucdavis-bioinformatics-training/2020-August-Advanced-scRNAseq
+  - title: Biocore website
+    url: http://bioinformatics.ucdavis.edu
