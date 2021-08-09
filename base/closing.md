@@ -32,13 +32,7 @@ My recommendation is to follow all of the instructions again, from the beginning
 
 ##  Upcoming Workshops
 
-Now in our 13th year of training researchers, the UC Davis Bioinformatics Core invites you to attend one or more of our 2020 workshops. The following workshops are suitable for beginners to advanced researchers, and are also of interest to those with some data analysis experience.
-
-| :------------- |:-------------:|
-|Oct 5 - Oct 9, 2020 | Bioinformatics: Command Line/R Prerequisites |
-|Nov 30 - Dec 4, 2020 | Introduction to Analysis of Epigenetic Data |
-
-For more information on these and other events, and to register, go to [https://registration.genomecenter.ucdavis.edu/](https://registration.genomecenter.ucdavis.edu/)
+Now in our 13th year of training researchers, the UC Davis Bioinformatics Core invites you to attend one or more of our 2021 workshops. For more information, and to register, go to [https://registration.genomecenter.ucdavis.edu/](https://registration.genomecenter.ucdavis.edu/)
 
 ## Previous Workshops available online
 

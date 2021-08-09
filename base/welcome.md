@@ -28,14 +28,7 @@ Our team offers custom bioinformatics services to academic and private organizat
 
 <img src="https://raw.githubusercontent.com/ucdavis-bioinformatics-training/ucdavis-bioinformatics-training.presentations/master/flowcharts/flowchart2.png" alt="flowchart2" width="600px"/>
 
-* Preprocessing scRNA sequence data
-* Running cellranger, star and salmon then comparing
-* Anchoring of samples to other samples
-* Monocle cell trajectory analysis
-* Velocity analysis
-* VDJ T and B cell analysis
-
-* Goal is 30-40% lecture/discussion 60-70% hands-on
+This workshop focuses on velocity and trajectory analysis. For differential expression analysis, consider Single Cell RNA-Seq Analysis.
 
 ## Structure of the Virtual Workshops
 
@@ -45,9 +38,8 @@ Given the current Covid19 pandemic, and stay in place orders around the world, w
 
 Course lecture, discussions, and one-on-one help/troubleshooting will be conducted using a zoom meeting.
 
-  * Each participant will be provided a personal break out room that will allow one-on-one troubleshooting by our staff, screen sharing and even remote control.
+  * We will be using breakout rooms for group work, one-on-one troubleshooting by our staff, screen sharing and even remote control.
   * The Chat features of Zoom will **not** be our primary mode of text communication as its history is not reliable.
-  * We will stick to a schedule to allow people to plan their day and know when they need to be back at their computers for lecture.
   * Video recordings of lectures will be made available to participants.
 
 Because video is involved, we ask everyone to be respectful and we reserve the right to remove someone if they are being disrespectful or disruptive.
@@ -59,10 +51,6 @@ Because video is involved, we ask everyone to be respectful and we reserve the r
 Text based communication will be conducted via a Slack channel. Staff will be monitoring the Slack channel to answer questions (and schedule a Zoom break out room if needed). If you know the answer to someone else's question, feel free to answer it.
 
 [Learn more about how we use Slack in our workshops.](./slack)
-
-#### Patience
-
-We ask for a little more patience as this process is also new to us, but we are committed to providing you the best educational experience we can (under the current conditions).
 
 ### Workshop Materials
 
@@ -81,14 +69,10 @@ Workshop materials are all posted on github, and publicly available
 
 * This Advanced scRNAseq Workshop
 
-   [https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-scRNAseq/](https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-scRNAseq/)
+   [https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-scRNAseq/](https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/)
 
 ### Computing Cluster
 
 A portion of  this course will be conducted on our servers and compute cluster (tadpole.genomecenter.ucdavis.edu).
 
-Instructions on how to get an account will be sent by email
-
-If you already have, or have had in the past, an account on our systems, then please tell us your username, or email, and we will add you to the workshop. **Do not create a new account**
-
-Cluster usage will be under the slurm reservation  ‘adv_scrna_workshop’
+Instructions on how to get an account will be sent by email.

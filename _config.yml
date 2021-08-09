@@ -9,8 +9,6 @@ navigation:
   - heading: Introduction and Lectures
   - title: Intro to the Workshop and Core
     url: base/welcome
-  - title: Schedule
-    url: base/schedule
 
   - heading: Support
   - title: Using Slack in this workshop

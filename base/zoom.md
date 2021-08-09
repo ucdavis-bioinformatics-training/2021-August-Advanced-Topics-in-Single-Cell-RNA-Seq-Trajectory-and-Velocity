@@ -1,12 +1,12 @@
 # Online Workshops with Zoom
 
- Course lecture, discussions, and one-on-one help/troubleshooting will be conducted using a zoom meeting.
+Course lecture, discussions, and one-on-one help/troubleshooting will be conducted using a zoom meeting.
 
-   * Participants will be provided with break out rooms that will allow one-on-one troubleshooting by our staff and TAs, screen sharing, and even remote control.
-   * We will try and stick to a schedule to allow people to plan their day and know when they need to be back at their computers for lecture.
-   * Video recordings of lectures will be made available to participants.
+  * We will be using breakout rooms for group work, one-on-one troubleshooting by our staff, screen sharing and even remote control.
+  * The Chat features of Zoom will **not** be our primary mode of text communication as its history is not reliable.
+  * Video recordings of lectures will be made available to participants.
 
- Because video is involved, we ask everyone to be respectful and we reserve the right to remove someone if they are being disrespectful or disruptive.
+Because video is involved, we ask everyone to be respectful and we reserve the right to remove someone if they are being disrespectful or disruptive.
 
 ## Basic Controls
 
@@ -18,9 +18,7 @@ The basic controls can be found at the bottom of the Zoom window. These controls
 
 ## Non-verbal Responses
 
-During lectures, our instructors will occasionally request non-verbal feedback from all participants to quickly assess how well the group is following the material, gauge interest in a topic, and keep track of the number of participants that have completed a hands-on exercise. These options can be found at the bottom of the participants panel.
-
-<img src="https://raw.githubusercontent.com/ucdavis-bioinformatics-training/ucdavis-bioinformatics-training.presentations/master/misc/zoom/nonverbal.png" alt="nonberbal response options" width="800px"/>
+During lectures, our instructors will occasionally request non-verbal feedback from all participants to quickly assess how well the group is following the material, gauge interest in a topic, and keep track of the number of participants that have completed a hands-on exercise. These options can be found under "Reactions."
 
 ## Asking Questions
 
@@ -28,7 +26,7 @@ In addition to non-verbal feedback, we want to hear from participants during lec
 
 ## Breakout rooms
 
-During hands-on sections of the course, breakout rooms may be opened to allow many participants to receive one-on-one assistance at the same time. When breakout rooms are opened, you will receive an invitation to join.
+During hands-on sections of the course, breakout rooms may be opened to allow many participants to do group work, or receive one-on-one assistance. When breakout rooms are opened, you will receive an invitation to join.
 
 <img src="https://raw.githubusercontent.com/ucdavis-bioinformatics-training/ucdavis-bioinformatics-training.presentations/master/misc/zoom/breakout_invite.png" alt="invitation to join breakout room" width="600px"/>
 
