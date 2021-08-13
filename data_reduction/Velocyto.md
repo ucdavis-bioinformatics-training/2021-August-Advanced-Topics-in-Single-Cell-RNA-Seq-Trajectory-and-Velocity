@@ -4,7 +4,7 @@ Login to tadpole and navigate to your directory on the share space.
 ```bash
 cd /share/workshop/adv_scrnaseq/$USER
 
-srun -t 1-00:00:00 -c 4 -n 1 --mem 16000 --partition production --account adv_scrna_workshop --reservation adv_scrna_workshop  --pty /bin/bash
+srun -t 1-00:00:00 -c 4 -n 1 --mem 16000 --partition production --account workshop --reservation workshop  --pty /bin/bash
 ```
 
 #  RNA Velocity measurement using Velocyto

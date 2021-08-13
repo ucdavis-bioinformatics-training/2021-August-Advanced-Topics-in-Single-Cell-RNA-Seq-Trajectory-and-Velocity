@@ -33,20 +33,17 @@ navigation:
     url: https://ucdavis-bioinformatics-training.github.io/2021-June-Introduction-to-R-for-Bioinformatics/
 
   - heading: Monocle Trajectory Analysis
+  - title: Prepare for Monocle
+    url: data_analysis/scrna_analysis_prepare1_fixed
   - title: Monocle
     url: data_analysis/adv_scrnaseq_monocle
 
-  # - title: Generating Expression Matrices
-  #   url: data_reduction/Expression_Matrix
-  # - title: Expression project setup
-  #   url: data_reduction/project_setup_counting
-
   - heading: Velocity Analysis
-  - title: scRNA analysis prepare, part 2
-    url: data_analysis/scrna_analysis_prepare2_fixed
-  - title: Velocity analysis
+  - title: Velocity data reduction
     url:   data_reduction/Velocyto
-  - title: Velocity  analysis
+  - title: Prepare for Velocity analysis
+    url: data_analysis/scrna_analysis_prepare2_fixed
+  - title: Velocity data analysis
     url:  data_analysis/Velocyto_fixed
 
   - heading: ETC
