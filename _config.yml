@@ -1,5 +1,5 @@
 theme: jekyll-theme-minimal
-title: 'Advanced Topoics in Single Cell RNA-Seq Analysis: Trajectory and Velocity Analysis'
+title: 'Adv Topics in scRNA-Seq: Trajectory and Velocity Analysis'
 show_downloads: True
 google_analytics: True
 navigation:
@@ -27,24 +27,25 @@ navigation:
     url: base/cli_prerequisites.md
   - title: R
     url: base/r_prerequisites.md
-  - title: More Materials
-    url: https://ucdavis-bioinformatics-training.github.io/2019-Winter-Bioinformatics_Command_Line_and_R_Prerequisites_Workshop/
+  - title: More Materials: Intro CLI
+    url: https://ucdavis-bioinformatics-training.github.io/2021-June-Introduction-to-the-Command-Line-for-Bioinformatics/
+  - title: More Materials: Intro R
+    url: https://ucdavis-bioinformatics-training.github.io/2021-June-Introduction-to-R-for-Bioinformatics/
 
-  - heading: Data Reduction
+  - heading: Monocle Trajectory Analysis
+  - title: Monocle
+    url: data_analysis/adv_scrnaseq_monocle
+
   - title: Generating Expression Matrices
     url: data_reduction/Expression_Matrix
   - title: Expression project setup
     url: data_reduction/project_setup_counting
-  - title: Velocity analysis
-    url:   data_reduction/Velocyto
 
-  - heading: Data analysis
+  - heading: Velocity Analysis
   - title: scRNA analysis prepare, part 2
     url: data_analysis/scrna_analysis_prepare2_fixed
-  - title: Monocle
-    url: data_analysis/adv_scrnaseq_monocle
-  - title: VDJ T cell and B cell analysis
-    url: data_analysis/VDJ_Analysis_fixed
+  - title: Velocity analysis
+    url:   data_reduction/Velocyto
   - title: Velocity  analysis
     url:  data_analysis/Velocyto_fixed
 
@@ -52,6 +53,6 @@ navigation:
   - title: Closing thoughts
     url: base/closing
   - title: Github page
-    url: https://github.com/ucdavis-bioinformatics-training/2020-August-Advanced-scRNAseq
+    url: https://github.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity
   - title: Biocore website
     url: http://bioinformatics.ucdavis.edu

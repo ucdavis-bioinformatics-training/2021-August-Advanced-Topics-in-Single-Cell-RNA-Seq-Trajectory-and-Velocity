@@ -36,12 +36,12 @@ sessionInfo()
 
 In the R console run the following command
 ```r
-download.file("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2020-August-Advanced-scRNAseq/master/data_analysis/VDJ_Analysis.Rmd", "VDJ_Analysis.Rmd")
+download.file("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/master/data_analysis/VDJ_Analysis.Rmd", "VDJ_Analysis.Rmd")
 ```
 
 ### Download the template Markdown workshop document for Velocity analysis and open it.
 
 In the R console run the following command
 ```r
-download.file("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2020-August-Advanced-scRNAseq/master/data_analysis/Velocyto.Rmd", "Velocyto.Rmd")
+download.file("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/master/data_analysis/Velocyto.Rmd", "Velocyto.Rmd")
 ```

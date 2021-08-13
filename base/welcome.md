@@ -69,7 +69,7 @@ Workshop materials are all posted on github, and publicly available
 
 * This Advanced scRNAseq Workshop
 
-   [https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-scRNAseq/](https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/)
+   [https://ucdavis-bioinformatics-training.github.io/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/](https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/)
 
 ### Computing Cluster
 
