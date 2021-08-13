@@ -27,9 +27,9 @@ navigation:
     url: base/cli_prerequisites
   - title: R
     url: base/r_prerequisites
-  - title: More Materials: Intro CLI
+  - title: More Materials - Intro CLI
     url: https://ucdavis-bioinformatics-training.github.io/2021-June-Introduction-to-the-Command-Line-for-Bioinformatics/
-  - title: More Materials: Intro R
+  - title: More Materials - Intro R
     url: https://ucdavis-bioinformatics-training.github.io/2021-June-Introduction-to-R-for-Bioinformatics/
 
   - heading: Monocle Trajectory Analysis
