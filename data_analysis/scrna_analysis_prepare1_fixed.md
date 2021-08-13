@@ -23,6 +23,9 @@ library(monocle3)
 ## Mac users may also experience installation problems due to Xcode or gfortran.
 ## Instructions: https://cole-trapnell-lab.github.io/monocle3/docs/installation/
 
+# If you had issues with leidenbase and gfortran, trying downloading and installing a newer gfortran
+# https://gcc.gnu.org/wiki/GFortranBinaries
+
 ## Possible you may have to install Rtools if the above fails
 ## http://jtleek.com/modules/01_DataScientistToolbox/02_10_rtools/#1
 
