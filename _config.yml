@@ -36,10 +36,10 @@ navigation:
   - title: Monocle
     url: data_analysis/adv_scrnaseq_monocle
 
-  - title: Generating Expression Matrices
-    url: data_reduction/Expression_Matrix
-  - title: Expression project setup
-    url: data_reduction/project_setup_counting
+  # - title: Generating Expression Matrices
+  #   url: data_reduction/Expression_Matrix
+  # - title: Expression project setup
+  #   url: data_reduction/project_setup_counting
 
   - heading: Velocity Analysis
   - title: scRNA analysis prepare, part 2
