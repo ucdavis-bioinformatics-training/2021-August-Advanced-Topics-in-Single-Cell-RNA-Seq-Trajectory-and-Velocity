@@ -24,9 +24,9 @@ navigation:
 
   - heading: Prerequisites
   - title: CLI
-    url: base/cli_prerequisites.md
+    url: base/cli_prerequisites
   - title: R
-    url: base/r_prerequisites.md
+    url: base/r_prerequisites
   - title: More Materials: Intro CLI
     url: https://ucdavis-bioinformatics-training.github.io/2021-June-Introduction-to-the-Command-Line-for-Bioinformatics/
   - title: More Materials: Intro R
