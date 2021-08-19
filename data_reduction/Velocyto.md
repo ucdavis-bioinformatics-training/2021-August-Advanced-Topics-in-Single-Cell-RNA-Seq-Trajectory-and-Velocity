@@ -19,30 +19,20 @@ RNA velocity is a high-dimensional vector that predicts the future state of a ce
 
 ### Example dataset
 
-We'll use the example dataset from Mapping Comparison section from the paper, sample 654_small
+The data we're using here is unpublished human immune cell data that has been subsetted and manipulated. We'll be working with the output of cellranger multi. Specifically, velocyto.py uses the barcodes.tsv.gz and sample_alignments.bam files, along with the reference GTF used by cellranger.
 
-[_"Single-Cell RNA-seq Reveals Profound Alterations in Mechanosensitive Dorsal Root Ganglion Neurons With Vitamin E Deficiency"_](https://pubmed.ncbi.nlm.nih.gov/31733517/)
-
-
-and the cellranger count results folder from the [Mapping](scMapping) section.
-
-```
-/share/workshop/adv_scrnaseq/msettles/scrnaseq_processing/654_small
-```
+Let's set up the project directory
 
 ```bash
-cd /share/workshop/adv_scrnaseq/$USER/scrnaseq_processing
-```
-
-we also need the gtf file used in creating the reference, which should be here:
-
-```
-/share/workshop/adv_scrnaseq/msettles/scrnaseq_processing/Reference/Mus_musculus.GRCm38.100.filtered.gtf .
+mkdir -p /share/workshop/adv_scrnaseq/$USER/01-Cellranger/
+cd /share/workshop/adv_scrnaseq/$USER
+ln -s /share/biocore/workshops/2021_08_Trajectory_Velocity/01-Cellranger .
+ln -s /share/biocore/workshops/2021_08_Trajectory_Velocity/references .
 ```
 
 ### Next lets install the software [velocyto](https://velocyto.org/)
 
-To install velocyto (a python application) we are going to use conda and a virtual environment
+To install velocyto (a python application) we are going to use conda and a virtual environment.
 
 ```bash
 cd /share/workshop/adv_scrnaseq/$USER
@@ -51,13 +41,34 @@ conda create -p velocyto
 conda activate /share/workshop/adv_scrnaseq/$USER/velocyto
 ```
 
-If the environment 'activated' properly, than your prompt should look something like this.
+If the environment 'activated' properly, than your prompt should look something like this:
 
 ```
-(/share/workshop/adv_scrnaseq/msettles/velocyto) msettles@tadpole:/share/workshop/adv_scrnaseq/msettles$
+(/share/workshop/adv_scrnaseq/hslyman/velocyto) hslyman@tadpole:/share/workshop/adv_scrnaseq/hslyman$
 ```
 
-If not you can try to initialize your bash
+If not, you may have gotten an error message:
+```
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+```
+
+In order to initialize our shell while in an interactive session, we need to run a few extra lines of code.
+
 ```bash
 aklog
 conda init bash
@@ -85,63 +96,37 @@ You want to download the mask in gtf format. Unfortunately, Ensembl doesn't prov
 
 ###  Running Velocyto on Cellranger output
 
-Lets first take a look at the help doc for run10x
-
-```
-velocyto run10x --help
-```
-
-Ok, now we are ready to run this on our sample
+Velocyto has a helpful run10x function, which is a wrapper around the run function with some preset parameters that allow you to get away with typing less on the command line. However, the output folders produced by cellranger multi differ slightly from those produced by cellranger count, so we will be using the more general "run" function. Let's first take a look at the help documentation (also available [online](https://velocyto.org/velocyto.py/tutorial/cli.html#run-run-on-any-technique-advanced-use)).
 
 ```bash
-cd /share/workshop/adv_scrnaseq/$USER/scrnaseq_processing
-velocyto run10x  654_small References/Mus_musculus.GRCm38.100.filtered.gtf
+velocyto run --help
 ```
-
-**This does fail to complete, the dataset is too small**
-If you'd like to run to completion you can copy over the cellranger full dataset
+We're ready to run velocyto on our first sample!
 
 ```bash
-cp -r /share/biocore/workshops/2020_scRNAseq/dataset_654/654 /share/workshop/adv_scrnaseq/$USER/scrnaseq_processing/654
+cd /share/workshop/adv_scrnaseq/$USER/
+velocyto run --bcfile /share/workshop/adv_scrnaseq/$USER/01-Cellranger/Sample1/outs/multi/count/raw_feature_bc_matrix/barcodes.tsv.gz \
+             --mask /share/workshop/adv_scrnaseq/$USER/references/GRCh38_rmsk.gtf \
+             --outputfolder /share/workshop/adv_scrnaseq/$USER/02-Velocyto \
+             --samtools-threads 24 \
+             --samtools-memory 2000 \
+             /share/workshop/adv_scrnaseq/$USER/01-Cellranger/Sample1/outs/per_sample_outs/Sample1/count/sample_alignments.bam \
+             /share/workshop/adv_scrnaseq/$USER/references/refdata-gex-GRCh38-2020-A/genes/genes.gtf \
+             2> velocyto_sample1.err > velocyto_sample1.out
 ```
+Even with only 10,000,000 reads, this takes a while. You can observe the progress of your velocyto job by viewing the tail of velocyto_sample1.out. We can progress to the R analysis with output from all three samples made earlier this week.
 
 ### Output
 
-Velocyto run10x simply produces a folder called velocyto in the sample directory with a single [loom](https://linnarssonlab.org/loompy/format/index.html) file in it, which contains the needed matrices for the analysis.
+Velocyto produces a single [loom](https://linnarssonlab.org/loompy/format/index.html) file containing the needed matrices for the analysis.
 
-The output folder 654_small, now has a new folder called velocyto
-```
-drwxrwsr-x 5 msettles biocore   20 May 28 07:22 .
-drwxrwsr-x 3 msettles biocore    4 May 28 07:17 ..
--rw-rw-r-- 1 msettles biocore 4.2M May 28 06:29 654.mri.tgz
--rw-rw-r-- 1 msettles biocore  287 May 28 06:29 _cmdline
--rw-rw-r-- 1 msettles biocore  66K May 28 06:29 _filelist
--rw-r--r-- 1 msettles biocore 969K May 28 06:29 _finalstate
--rw-r--r-- 1 msettles biocore  719 May 28 06:29 _invocation
--rw-r--r-- 1 msettles biocore    5 May 28 06:29 _jobmode
--rw-r--r-- 1 msettles biocore  69K May 28 06:27 _log
--rw-r--r-- 1 msettles biocore  66K May 28 06:29 _mrosource
-drwxrwsr-x 5 msettles biocore   14 May 28 06:28 outs
--rw-r--r-- 1 msettles biocore 577K May 28 06:29 _perf
-drwxrwsr-x 6 msettles biocore    6 May 28 06:26 SC_RNA_COUNTER_CS
--rw-rw-r-- 1 msettles biocore  17K May 28 06:29 _sitecheck
--rw-r--r-- 1 msettles biocore    2 May 28 06:29 _tags
--rw-r--r-- 1 msettles biocore   51 May 28 06:27 _timestamp
--rw-r--r-- 1 msettles biocore   36 May 28 06:29 _uuid
--rw-r--r-- 1 msettles biocore 132K May 28 06:27 _vdrkill
-drwxrwsr-x 2 msettles biocore    3 May 28 08:50 velocyto    <-----
--rw-r--r-- 1 msettles biocore   61 May 28 06:27 _versions
-```
+To download all three output loom files and the cellranger count data, run the following from the terminal on your local computer:
 
-and inside that folder is the loom file.
-
+```bash
+scp user@tadpole.genomecenter.ucdavis.edu:/share/biocore/workshops/2021_08_Trajectory_Velocity/data_download.tar.gz .
+tar -xzv data_download.tar.gz
 ```
-drwxrwsr-x 2 msettles biocore   3 May 28 08:50 .
-drwxrwsr-x 5 msettles biocore  20 May 28 07:22 ..
--rw-rw-r-- 1 msettles biocore 56M May 28 08:52 654.loom
-```
-
-I expect that the 654_small dataset fails because their aren't enough reads, but on a full dataset it produces the loom file.
+We will be using these files in R, so be sure to move them to your R project directory.
 
 ### More reading
 
