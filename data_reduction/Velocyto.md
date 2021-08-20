@@ -113,7 +113,7 @@ cd /share/workshop/adv_scrnaseq/$USER/
 velocyto run --bcfile /share/workshop/adv_scrnaseq/$USER/01-Cellranger/Sample1/outs/multi/count/raw_feature_bc_matrix/barcodes.tsv.gz \
              --mask /share/workshop/adv_scrnaseq/$USER/references/GRCh38_rmsk.gtf \
              --outputfolder /share/workshop/adv_scrnaseq/$USER/02-Velocyto \
-             --samtools-threads 24 \
+             --samtools-threads 16 \
              --samtools-memory 2000 \
              /share/workshop/adv_scrnaseq/$USER/01-Cellranger/Sample1/outs/per_sample_outs/Sample1/count/sample_alignments.bam \
              /share/workshop/adv_scrnaseq/$USER/references/refdata-gex-GRCh38-2020-A/genes/genes.gtf \
