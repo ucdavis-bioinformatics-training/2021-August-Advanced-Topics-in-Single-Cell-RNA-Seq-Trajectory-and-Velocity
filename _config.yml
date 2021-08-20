@@ -32,12 +32,6 @@ navigation:
   - title: More Materials - Intro R
     url: https://ucdavis-bioinformatics-training.github.io/2021-June-Introduction-to-R-for-Bioinformatics/
 
-  - heading: Monocle Trajectory Analysis
-  - title: Prepare for Monocle
-    url: data_analysis/scrna_analysis_prepare1_fixed
-  - title: Monocle
-    url: data_analysis/adv_scrnaseq_monocle
-
   - heading: Velocity Analysis
   - title: Velocity data reduction
     url:   data_reduction/Velocyto
@@ -45,6 +39,12 @@ navigation:
     url: data_analysis/scrna_analysis_prepare2_fixed
   - title: Velocity data analysis
     url:  data_analysis/Velocyto_fixed
+
+  - heading: Monocle Trajectory Analysis
+  - title: Prepare for Monocle
+    url: data_analysis/scrna_analysis_prepare1_fixed
+#  - title: Monocle
+#    url: data_analysis/adv_scrnaseq_monocle
 
   - heading: ETC
   - title: Closing thoughts
