@@ -6,7 +6,7 @@ output:
       keep_md: TRUE
 ---
 
-For a non-Rmd version of this code, (download the Velocyto.R script)[https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/master/data_analysis/Velocyto.R]. We begin by loading required packages.
+For a non-Rmd version of this code, [download the Velocyto.R script](https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/master/data_analysis/Velocyto.R). We begin by loading required packages.
 
 
 ```r
