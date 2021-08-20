@@ -51,7 +51,7 @@ If you are in a hurry, you can skip this section, and filter the cells loaded in
 
 
 ```r
-data_location <- "data/"
+data_location <- "data_downlad/"
 samples <- c("sample1", "sample2", "sample3")
 
 raw10x <- lapply(samples, function(i){

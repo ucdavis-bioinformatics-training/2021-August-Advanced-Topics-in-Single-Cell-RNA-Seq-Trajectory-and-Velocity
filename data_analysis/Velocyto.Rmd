@@ -38,7 +38,7 @@ For completeness, we will run the count data through a basic Seurat analysis bef
 If you are in a hurry, you can skip this section, and filter the cells loaded in from the loom file instead in the Velocyto section. You will not be able to execute the code as is, and will need to make a few changes.
 
 ```{r, seurat}
-data_location <- "data/"
+data_location <- "data_download/"
 samples <- c("sample1", "sample2", "sample3")
 
 raw10x <- lapply(samples, function(i){
