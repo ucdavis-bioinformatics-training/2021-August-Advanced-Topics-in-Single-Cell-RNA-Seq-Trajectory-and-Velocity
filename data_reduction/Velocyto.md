@@ -4,7 +4,13 @@ Login to tadpole and navigate to your directory on the share space.
 ```bash
 cd /share/workshop/adv_scrnaseq/$USER
 
-srun -t 1-00:00:00 -c 4 -n 1 --mem 16000 --partition production --account workshop --reservation workshop  --pty /bin/bash
+srun -t 1-00:00:00 -c 16 -n 1 --mem-per-cpu 2000 --partition production --account workshop --reservation workshop  --pty /bin/bash
+```
+
+We're going to need access to our home directories from the interactive session, so we need to run the aklog command.
+
+```bash
+aklog
 ```
 
 #  RNA Velocity measurement using Velocyto
@@ -24,7 +30,7 @@ The data we're using here is unpublished human immune cell data that has been su
 Let's set up the project directory
 
 ```bash
-mkdir -p /share/workshop/adv_scrnaseq/$USER/01-Cellranger/
+mkdir -p /share/workshop/adv_scrnaseq/$USER
 cd /share/workshop/adv_scrnaseq/$USER
 ln -s /share/biocore/workshops/2021_08_Trajectory_Velocity/01-Cellranger .
 ln -s /share/biocore/workshops/2021_08_Trajectory_Velocity/references .
@@ -72,7 +78,7 @@ In order to initialize our shell while in an interactive session, we need to run
 ```bash
 aklog
 conda init bash
-source /home/$USER/.bashrc
+source ~/.bashrc
 conda activate /share/workshop/adv_scrnaseq/$USER/velocyto
 ```
 
