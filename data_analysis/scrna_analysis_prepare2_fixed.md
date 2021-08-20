@@ -25,6 +25,9 @@ library(pcaMethods)
 remotes::install_github('satijalab/seurat-wrappers')
 library(SeuratWrappers)
 
+## For velocito.R you will also need boost and open MP.
+## See https://github.com/velocyto-team/velocyto.R
+
 remotes::install_github("velocyto-team/velocyto.R")
 library(velocyto.R)
 
