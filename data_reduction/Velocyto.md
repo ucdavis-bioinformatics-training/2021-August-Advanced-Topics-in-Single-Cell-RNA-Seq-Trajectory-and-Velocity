@@ -76,7 +76,7 @@ source /home/$USER/.bashrc
 conda activate /share/workshop/adv_scrnaseq/$USER/velocyto
 ```
 
-Once your conda environment is properly activated you can then install the softare.
+Once your conda environment is properly activated you can then install the software.
 ```bash
 # install prerequisites
 conda install numpy scipy cython numba matplotlib scikit-learn h5py click
@@ -84,15 +84,15 @@ conda install numpy scipy cython numba matplotlib scikit-learn h5py click
 pip install velocyto
 ```
 
-and then test the installation
+To test the installation, print Velocyto's help statement.
 ```bash
 velocyto --help
 ```
 
-It is also recommended to use a repetative sequence mask file, this is easiest to obtain from the [UCSC genome browser](https://genome.ucsc.edu/cgi-bin/hgTables?hgsid=611454127_NtvlaW6xBSIRYJEBI0iRDEWisITa&clade=mammal&org=Mouse&db=mm10&hgta_group=allTracks&hgta_track=rmsk&hgta_table=0&hgta_regionType=genome&position=chr12%3A56694976-56714605&hgta_outputType=primaryTable&hgta_outputType=gff&hgta_outFileName=mm10_rmsk.gtf
+It is also recommended to use a repetative sequence mask file, this is easiest to obtain from the [UCSC genome browser](https://genome.ucsc.edu/cgi-bin/hgTables?hgsid=611454127_NtvlaW6xBSIRYJEBI0iRDEWisITa&clade=mammal&org=Human&db=0&hgta_group=allTracks&hgta_track=rmsk&hgta_table=rmsk&hgta_regionType=genome&position=&hgta_outputType=gff&hgta_outFileName=GRCh38_rmsk.gtf
 ).
 
-You want to download the mask in gtf format. Unfortunately, Ensembl doesn't provide a gtf file for the repeat sequences and we'd have to generate one ourselves (write a script to do so) which is beyond the scope of this workshop.
+You want to download the mask in GTF format. Unfortunately, Ensembl doesn't provide a GTF file for the repeat sequences and we'd have to generate one ourselves (write a script to do so) which is beyond the scope of this workshop.
 
 ###  Running Velocyto on Cellranger output
 
@@ -120,13 +120,13 @@ Even with only 10,000,000 reads, this takes a while. You can observe the progres
 
 Velocyto produces a single [loom](https://linnarssonlab.org/loompy/format/index.html) file containing the needed matrices for the analysis.
 
-To download all three output loom files and the cellranger count data, run the following from the terminal on your local computer:
+To download all three output loom files and the cellranger count data, run the following from the terminal on your local computer, making sure to replace "user" with your username.
 
 ```bash
 scp user@tadpole.genomecenter.ucdavis.edu:/share/biocore/workshops/2021_08_Trajectory_Velocity/data_download.tar.gz .
 tar -xzv data_download.tar.gz
 ```
-We will be using these files in R, so be sure to move them to your R project directory.
+We will be using these files in R, so move them to your R project directory.
 
 ### More reading
 
