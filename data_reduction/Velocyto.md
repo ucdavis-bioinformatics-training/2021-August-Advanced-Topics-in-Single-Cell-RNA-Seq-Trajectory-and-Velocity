@@ -2,8 +2,6 @@
 Login to tadpole and navigate to your directory on the share space.
 
 ```bash
-cd /share/workshop/adv_scrnaseq/$USER
-
 srun -t 1-00:00:00 -c 16 -n 1 --mem-per-cpu 2000 --partition production --account workshop --reservation workshop  --pty /bin/bash
 ```
 
