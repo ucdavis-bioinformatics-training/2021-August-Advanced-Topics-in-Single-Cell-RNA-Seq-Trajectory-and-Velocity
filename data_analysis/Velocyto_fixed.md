@@ -24,7 +24,7 @@ library(velocyto.R)
 </div>
 ```r
 #install.packages("devtools")
-#devtools::install_github('satijalab/seurat-wrappers')
+#remotes::install_github('satijalab/seurat-wrappers')
 library(SeuratWrappers)
 ```
 

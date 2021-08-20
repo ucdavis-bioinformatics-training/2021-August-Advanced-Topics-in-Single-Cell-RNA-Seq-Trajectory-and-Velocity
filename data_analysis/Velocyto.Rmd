@@ -13,7 +13,7 @@ library(Seurat)
 library(ggplot2)
 library(velocyto.R)
 #install.packages("devtools")
-#devtools::install_github('satijalab/seurat-wrappers')
+#remotes::install_github('satijalab/seurat-wrappers')
 library(SeuratWrappers)
 ```
 
