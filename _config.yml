@@ -44,7 +44,7 @@ navigation:
   - title: Prepare for Monocle
     url: data_analysis/scrna_analysis_prepare1_fixed
   - title: Monocle
-    url: data_analysis/monocle
+    url: data_analysis/monocle_fixed
 
   - heading: ETC
   - title: Closing thoughts
