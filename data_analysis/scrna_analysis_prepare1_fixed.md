@@ -24,6 +24,11 @@ library(R.utils)
 remotes::install_github('satijalab/seurat-wrappers')
 library(SeuratWrappers)
 
+if (!any(rownames(installed.packages()) == "patchwork")){
+  BiocManager::install("patchwork")
+}
+library(patchwork)
+
 ## Monocle3 dependancies
 BiocManager::install(c("Biobase", "SingleCellExperiment", "batchelor", "BiocGenerics", "DelayedArray", "DelayedMatrixStats", "limma", "S4Vectors", "SummarizedExperiment", "pcaMethods"))
 
@@ -49,7 +54,7 @@ sessionInfo()
 
 In the R console run the following commands
 ```r
-download.file("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/master/data_analysis/adv_scrnaseq_monocle.Rmd", "monocle.Rmd")
+download.file("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/master/data_analysis/monocle.Rmd", "monocle.Rmd")
 ```
 
 <!-- Additionally, download the following data files for monocle analysis.

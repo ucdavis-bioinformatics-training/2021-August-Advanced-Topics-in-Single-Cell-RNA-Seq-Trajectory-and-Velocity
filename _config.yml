@@ -43,8 +43,8 @@ navigation:
   - heading: Monocle Trajectory Analysis
   - title: Prepare for Monocle
     url: data_analysis/scrna_analysis_prepare1_fixed
-#  - title: Monocle
-#    url: data_analysis/adv_scrnaseq_monocle
+  - title: Monocle
+    url: data_analysis/monocle
 
   - heading: ETC
   - title: Closing thoughts

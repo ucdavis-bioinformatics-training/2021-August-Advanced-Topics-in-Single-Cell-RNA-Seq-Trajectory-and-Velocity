@@ -1,0 +1,268 @@
+---
+title: "Advanced Single Cell RNA-Seq: Trajectories with Monocle"
+author: "Bioinformatics Core"
+output:
+  html_document:
+    keep_md: TRUE
+---
+
+# Trajectory Analysis with Monocle 3
+
+[Monocle](http://cole-trapnell-lab.github.io/monocle-release/), from the Trapnell Lab, is a piece of the TopHat suite (for RNAseq) that performs among other things differential expression, trajectory, and pseudotime analyses on single cell RNA-Seq data. A very comprehensive [tutorial](http://cole-trapnell-lab.github.io/monocle-release/docs/#recommended-analysis-protocol) can be found on the Trapnell lab website. We will be using Monocle3, which is still in the "beta" phase of its development and hasn't been updated in a few years. The development branch however has some activity in the last year in preparation for Monocle3.1.
+
+```{r libraries, results="hide", warning=FALSE, message=FALSE, error=FALSE}
+library(monocle3)
+library(Seurat)
+library(SeuratWrappers)
+library(patchwork)
+#library(dplyr)
+
+set.seed(1234)
+```
+
+I prefer to use a few custom colorblind-friendly palettes, so we will set those up now. The palettes used in this exercise were developed by Paul Tol. You can learn more about them on [Tol's webpage](https://personal.sron.nl/~pault/#sec:qualitative).
+
+```{r, palettes, warning=FALSE, message=TRUE, error=FALSE}
+tol_high_contrast_palette <- c("#DDAA33", "#BB5566", "#004488")
+tol_vibrant_palette <- c("#0077BB", "#33BBEE", "#009988",
+                         "#EE7733", "#CC3311", "#EE3377",
+                         "#BBBBBB")
+tol_muted_palette <- c("#332288", "#88CCEE", "#44AA99",
+                       "#117733", "#999933", "#DDCC77",
+                       "#CC6677", "#882255", "#AA4499")
+```
+
+
+### Project set-up
+
+Because Seurat is now the most widely used package for single cell data analysis we will want to use Monocle with Seurat. For greater detail on single cell RNA-Seq analysis, see the Introductory course materials [here](https://ucdavis-bioinformatics-training.github.io/2021-August-Single-Cell-RNA-Seq-Analysis/).
+
+## Loading data into Seurat
+
+```{r, seurat, warning=FALSE, message=TRUE, error=FALSE}
+data_location <- "data_download/"
+samples <- c("sample1", "sample2", "sample3")
+
+raw10x <- lapply(samples, function(i){
+  d10x <- Read10X_h5(file.path(data_location, paste0(i, "_raw_feature_bc_matrix.h5")))
+  colnames(d10x$`Gene Expression`) <- paste(sapply(strsplit(colnames(d10x$`Gene Expression`),split="-"),'[[',1L),i,sep="-")
+  colnames(d10x$`Antibody Capture`) <- paste(sapply(strsplit(colnames(d10x$`Antibody Capture`),split="-"),'[[',1L),i,sep="-")
+  d10x
+})
+names(raw10x) <- samples
+trA <- CreateSeuratObject(do.call("cbind", lapply(raw10x,"[[", "Gene Expression")),
+                          project = "cellranger multi",
+                          min.cells = 0,
+                          min.features = 300,
+                          names.field = 2,
+                          names.delim = "\\-")
+trA$percent_mito <- PercentageFeatureSet(trA, pattern = "^MT-")
+
+trA <- subset(trA, percent_mito <= 10)
+trA <- subset(trA, nCount_RNA <= 10000)
+trA <- subset(trA, nFeature_RNA >= 500)
+table(trA$orig.ident)
+```
+
+
+## Seurat processing of data
+
+Because we don't want to do the exact same thing as we did in the Velocity analysis, lets instead use the Integration technique.
+
+```{r preproc, warning=FALSE, message=TRUE, error=FALSE}
+# First split the sample by original identity
+trA.list <- SplitObject(trA, split.by = "orig.ident")
+
+# perform standard preprocessing on each object
+for (i in 1:length(trA.list)) {
+  trA.list[[i]] <- NormalizeData(trA.list[[i]], verbose = FALSE)
+  trA.list[[i]] <- FindVariableFeatures(
+    trA.list[[i]], selection.method = "vst",
+    nfeatures = 2000, verbose = FALSE
+  )
+}
+
+features <- SelectIntegrationFeatures(trA.list)
+for (i in seq_along(along.with = trA.list)) {
+    trA.list[[i]] <- ScaleData(trA.list[[i]], features = features)
+    trA.list[[i]] <- RunPCA(trA.list[[i]], features = features)
+}
+
+# find anchors
+anchors <- FindIntegrationAnchors(object.list = trA.list)
+
+# integrate data
+trA.integrated <- IntegrateData(anchorset = anchors)
+
+trA.integrated <- ScaleData(trA.integrated)
+trA.integrated <- RunPCA(trA.integrated)
+trA.integrated <- RunUMAP(trA.integrated, dims = 1:50, reduction.name = "UMAP")
+trA.integrated <- FindNeighbors(trA.integrated, dims = 1:50)
+trA.integrated <- FindClusters(trA.integrated)
+DimPlot(trA.integrated, group.by = c("orig.ident", "ident"))
+```
+**QUESTION**
+
+How does this result look different from the result produced in the velocity section?
+
+## Setting up monocle3 cell_data_set object using the SueratWrappers
+
+monocle3 uses a `cell_data_set` object, the `as.cell_data_set` function from SeuratWrappers can be used to "convert" a Seurat object to Monocle object. Moving the data calculated in Seurat to the appropriate slots in the Monocle object. 
+
+
+For trajectory analysis, 'partitions' as well as 'clusters' are needed and so the Monocle cluster_cells function must also be performed. Monocle's clustering technique is more of a community based algorithm and actually uses the uMap plot (sort of) in its routine and partitions are more well separated groups using a statistical test from [Alex Wolf et al](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1663-x), 
+
+```{r data_conversion, warning=FALSE, message=TRUE, error=FALSE}
+cds <- as.cell_data_set(trA.integrated)
+cds <- cluster_cells(cds, resolution=1e-3)
+
+p1 <- plot_cells(cds, color_cells_by = "cluster", show_trajectory_graph = FALSE)
+p2 <- plot_cells(cds, color_cells_by = "partition", show_trajectory_graph = FALSE)
+wrap_plots(p1, p2)
+```
+
+Spend a moment looking at the cell_data_set object and its slots (using `slotNames`) as well as `cluster_cells`. Try updating the resolution parameter to generate more clusters (try 1e-5, 1e-3, 1e-1, and 0).
+
+How many clusters are generated at each level?
+
+### Subsetting partitions
+
+Because partitions are high level separations of the data (yes we have only 1 here). It may make sense to then perform trajectory analysis on each partition separately. To do this we sould go back to Seurat, subset by partition, then back to a CDS
+
+```{r trajectory, warning=FALSE, message=TRUE, error=FALSE}
+integrated.sub <- subset(as.Seurat(cds, assay = NULL), monocle3_partitions == 1)
+cds <- as.cell_data_set(integrated.sub)
+```
+
+
+# Trajectory analysis
+
+In a data set like this one, cells were not harvested in a time series, but may not have all been at the same developmental stage. Monocle offers trajectory analysis to model the relationships between groups of cells as a trajectory of gene expression changes. The first step in trajectory analysis is the `learn_graph()` function. This may be time consuming.
+
+```{r learngraph, results='hide', message=FALSE, warning=FALSE, error=FALSE}
+cds <- learn_graph(cds, use_partition = TRUE, verbose = FALSE)
+```
+
+After learning the graph, monocle can plot add the trajectory graph to the cell plot.
+
+```{r trajectory_plot, warning=FALSE, message=FALSE, error=FALSE}
+plot_cells(cds,
+           color_cells_by = "cluster",
+           label_groups_by_cluster=FALSE,
+           label_leaves=FALSE,
+           label_branch_points=FALSE)
+```
+
+Not all of our trajectories are connected. In fact, only clusters that belong to the same partition are connected by a trajectory.
+
+# Color cells by pseudotime
+
+We can set the root to any one of our clusters by selecting the cells in that cluster to use as the root in the function `order_cells`. All cells that cannot be reached from a trajectory with our selected root will be gray, which represents "infinite" pseudotime.
+
+```{r pseudotime}
+cds <- order_cells(cds, root_cells = colnames(cds[,clusters(cds) == 4]))
+plot_cells(cds,
+           color_cells_by = "pseudotime",
+           group_cells_by = "cluster",
+           label_cell_groups = FALSE,
+           label_groups_by_cluster=FALSE,
+           label_leaves=FALSE,
+           label_branch_points=FALSE,
+           label_roots = FALSE,
+           trajectory_graph_color = "grey60")
+```
+
+Here the pseudotime trajectory is rooted in cluster 5. This choice was arbitrary. In reality, you would make the decision about where to root your trajectory based upon what you know about your experiment. If, for example, the markers identified with cluster 1 suggest to you that cluster 1 represents the earliest developmental time point, you would likely root your pseudotime trajectory there. Explore what the pseudotime analysis looks like with the root in different clusters. Because we have not set a seed for the random process of clustering, cluster numbers will differ between R sessions.
+
+
+We can export this data to the Seurat object and visualize
+```{r}
+integrated.sub <- as.Seurat(cds, assay = NULL)
+FeaturePlot(integrated.sub, "monocle3_pseudotime")
+```
+
+
+# Identify genes that change as a function of pseudotime
+
+Monocle's `graph_test()` function detects genes that vary over a trajectory. This may run very slowly. Adjust the number of cores as needed.
+
+```{r graphtest, results='hide', error=FALSE, message=FALSE, warning=FALSE}
+cds_graph_test_results <- graph_test(cds,
+                                     neighbor_graph = "principal_graph",
+                                     cores = 8)
+```
+
+ * You may have an issue with this function in newer version of R an rBind Error.
+ * Can fix this by:
+    * trace('calculateLW', edit = T, where = asNamespace("monocle3"))
+    * find Matrix::rBind and replace with rbind then save.
+  
+The output of this function is a table. We can look at the expression of some of these genes overlaid on the trajectory plot.
+
+```{r variablepseudo, results="hide", warning=FALSE, message=FALSE}
+rowData(cds)$gene_short_name <- row.names(rowData(cds))
+
+head(cds_graph_test_results, error=FALSE, message=FALSE, warning=FALSE)
+
+deg_ids <- rownames(subset(cds_graph_test_results[order(cds_graph_test_results$morans_I, decreasing = TRUE),], q_value < 0.05))
+
+plot_cells(cds,
+           genes=head(deg_ids),
+           show_trajectory_graph = FALSE,
+           label_cell_groups = FALSE,
+           label_leaves = FALSE)
+```
+
+We can also calculate modules of co-expressed genes. By providing the module-finding function with a list of possible resolutions, we are telling Louvain to perform the clustering at each resolution and select the result with the greatest modularity. Modules will only be calculated for genes that vary as a function of pseudotime.
+
+This heatmap displays the association of each gene module with each cell type.
+
+```{r cellmodules}
+gene_modules <- find_gene_modules(cds[deg_ids,],
+                                  resolution=c(10^seq(-6,-1)))
+table(gene_modules$module)
+cell_groups <- data.frame(cell = row.names(colData(cds)),
+                             cell_group = colData(cds)$orig.ident)
+agg_mat <- aggregate_gene_expression(cds,
+                                     gene_group_df = gene_modules,
+                                     cell_group_df = cell_groups)
+dim(agg_mat)
+row.names(agg_mat) <- paste0("Module ", row.names(agg_mat))
+pheatmap::pheatmap(agg_mat,
+                   scale="column",
+                   treeheight_row = 0,
+                   treeheight_col = 0,
+                   clustering_method="ward.D2")
+```
+We can also display the relationship between gene modules and monocle clusters as a heatmap.
+
+```{r clustermodules}
+cluster_groups <- data.frame(cell = row.names(colData(cds)),
+                             cluster_group = cds@clusters$UMAP[[2]])
+agg_mat2 <- aggregate_gene_expression(cds, gene_modules, cluster_groups)
+dim(agg_mat2)
+row.names(agg_mat2) <- paste0("Module ", row.names(agg_mat2))
+pheatmap::pheatmap(agg_mat2,
+                   scale="column",
+                   treeheight_row = 0,
+                   treeheight_col = 0,
+                   clustering_method="ward.D2")
+```
+
+```{r plotmodules}
+gm <- gene_modules[which(gene_modules$module %in% c(8, 18)),]
+plot_cells(cds,
+           genes=gm,
+           label_cell_groups=FALSE,
+           show_trajectory_graph=TRUE,
+           label_branch_points = FALSE,
+           label_roots = FALSE,
+           label_leaves = FALSE,
+           trajectory_graph_color = "grey60")
+```
+
+
+# R session information
+```{r info}
+sessionInfo()
+```
