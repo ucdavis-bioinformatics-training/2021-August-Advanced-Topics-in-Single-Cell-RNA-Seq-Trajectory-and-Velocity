@@ -1,7 +1,8 @@
 
-Login to tadpole and navigate to your directory on the share space.
+Login to tadpole and start an interactive session.
 
 ```bash
+ssh username@tadpole.genomecenter.ucdavis.edu
 srun -t 1-00:00:00 -c 16 -n 1 --mem-per-cpu 2000 --partition production --account workshop --reservation workshop  --pty /bin/bash
 ```
 
