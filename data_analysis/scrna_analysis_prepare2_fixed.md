@@ -4,18 +4,28 @@ Create an RStudio project
 
 In the R console run the following commands to install the needed packages to run Velocity
 ```r
-if (!any(rownames(installed.packages()) == "devtools")){
+if (!any(rownames(installed.packages()) == "remotes")){
   if (!requireNamespace("BiocManager", quietly = TRUE))
       install.packages("BiocManager")
-  BiocManager::install("devtools")
+  BiocManager::install("remotes")
 }
-library(devtools)
+library(remotes)
+
+if (!any(rownames(installed.packages()) == "R.utils")){
+  BiocManager::install("R.utils")
+}
+library(R.utils)
+
+if (!any(rownames(installed.packages()) == "pcaMethods")){
+  BiocManager::install("pcaMethods")
+}
+library(pcaMethods)
 
 ## install SeuratWrappers
-devtools::install_github('satijalab/seurat-wrappers')
+remotes::install_github('satijalab/seurat-wrappers')
 library(SeuratWrappers)
 
-devtools::install_github("velocyto-team/velocyto.R")
+remotes::install_github("velocyto-team/velocyto.R")
 library(velocyto.R)
 
 sessionInfo()

@@ -14,10 +14,10 @@ library(devtools)
 ## Monocle3 dependancies
 BiocManager::install(c("Biobase", "SingleCellExperiment", "batchelor", "BiocGenerics", "DelayedArray", "DelayedMatrixStats", "limma", "S4Vectors", "SummarizedExperiment", "pcaMethods"))
 
-devtools::install_github('cole-trapnell-lab/leidenbase')
-devtools::install_github('cole-trapnell-lab/monocle3')
+remotes::install_github('cole-trapnell-lab/leidenbase')
+remotes::install_github('cole-trapnell-lab/monocle3')
 
-## Test out the instalation
+## Test out the installation
 library(monocle3)
 
 ## Mac users may also experience installation problems due to Xcode or gfortran.
@@ -39,10 +39,10 @@ In the R console run the following commands
 download.file("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/master/data_analysis/adv_scrnaseq_monocle.Rmd", "monocle.Rmd")
 ```
 
-Additionally, download the following data files for monocle analysis.
+<!-- Additionally, download the following data files for monocle analysis.
 
 ```r
 download.file("https://github.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/raw/master/datasets/monocle3_expression_matrix.rds", "monocle3_expression_matrix.rds")
 download.file("https://github.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/raw/master/datasets/monocle3_cell_metadata.rds", "monocle3_cell_metadata.rds")
 download.file("https://github.com/ucdavis-bioinformatics-training/2021-August-Advanced-Topics-in-Single-Cell-RNA-Seq-Trajectory-and-Velocity/raw/master/datasets/monocle3_gene_metadata.rds", "monocle3_gene_metadata.rds")
-```
+``` -->
