@@ -4,12 +4,25 @@ Create an RStudio project
 
 In the R console run the following commands to install the needed packages to run Monocle3
 ```r
-if (!any(rownames(installed.packages()) == "devtools")){
+if (!any(rownames(installed.packages()) == "remotes")){
   if (!requireNamespace("BiocManager", quietly = TRUE))
       install.packages("BiocManager")
-  BiocManager::install("devtools")
+  BiocManager::install("remotes")
 }
-library(devtools)
+library(remotes)
+
+if (!any(rownames(installed.packages()) == "Seurat")){
+  BiocManager::install("Seurat")
+}
+library(Seurat)
+
+if (!any(rownames(installed.packages()) == "R.utils")){
+  BiocManager::install("R.utils")
+}
+library(R.utils)
+
+remotes::install_github('satijalab/seurat-wrappers')
+library(SeuratWrappers)
 
 ## Monocle3 dependancies
 BiocManager::install(c("Biobase", "SingleCellExperiment", "batchelor", "BiocGenerics", "DelayedArray", "DelayedMatrixStats", "limma", "S4Vectors", "SummarizedExperiment", "pcaMethods"))

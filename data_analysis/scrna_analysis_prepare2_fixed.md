@@ -16,14 +16,14 @@ if (!any(rownames(installed.packages()) == "R.utils")){
 }
 library(R.utils)
 
+remotes::install_github('satijalab/seurat-wrappers')
+library(SeuratWrappers)
+
 if (!any(rownames(installed.packages()) == "pcaMethods")){
   BiocManager::install("pcaMethods")
 }
 library(pcaMethods)
 
-## install SeuratWrappers
-remotes::install_github('satijalab/seurat-wrappers')
-library(SeuratWrappers)
 
 ## For velocito.R you will also need boost and open MP.
 ## See https://github.com/velocyto-team/velocyto.R
