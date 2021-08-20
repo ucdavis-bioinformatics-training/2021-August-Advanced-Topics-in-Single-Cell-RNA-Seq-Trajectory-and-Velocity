@@ -43,7 +43,7 @@ To install velocyto (a python application) we are going to use conda and a virtu
 ```bash
 cd /share/workshop/adv_scrnaseq/$USER
 module load anaconda3
-conda create -p velocyto
+conda create -p /share/workshop/adv_scrnaseq/$USER/velocyto
 conda activate /share/workshop/adv_scrnaseq/$USER/velocyto
 ```
 
