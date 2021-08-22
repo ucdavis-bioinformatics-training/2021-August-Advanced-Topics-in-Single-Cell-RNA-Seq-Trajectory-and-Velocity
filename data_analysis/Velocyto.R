@@ -1,9 +1,14 @@
+## Project set-up
+
 library(Seurat)
 library(ggplot2)
 library(velocyto.R)
 library(SeuratWrappers)
 
-# custom palettes (colorblind-friendly)
+data_location <- "data_download/"
+samples <- c("sample1", "sample2", "sample3")
+
+## colorblind-friendly palettes
 tol_high_contrast_palette <- c("#DDAA33", "#BB5566", "#004488")
 tol_vibrant_palette <- c("#0077BB", "#33BBEE", "#009988",
                          "#EE7733", "#CC3311", "#EE3377",
@@ -12,9 +17,7 @@ tol_muted_palette <- c("#332288", "#88CCEE", "#44AA99",
                        "#117733", "#999933", "#DDCC77",
                        "#CC6677", "#882255", "#AA4499")
 
-# basic Seurat on cellranger multi
-data_location <- "data_download/"
-samples <- c("sample1", "sample2", "sample3")
+# Seurat
 
 raw10x <- lapply(samples, function(i){
   d10x <- Read10X_h5(file.path(data_location, paste0(i, "_raw_feature_bc_matrix.h5")))
@@ -38,7 +41,7 @@ FeatureScatter(gex,
   geom_vline(xintercept = 10000) +
   geom_hline(yintercept = 10) +
   scale_color_manual(values = tol_high_contrast_palette)
-ggsave("featureScatter_count_mito.png")
+ggsave("FeatureScatter_nCount_percentMito.png")
 
 FeatureScatter(gex,
                feature1 = "nFeature_RNA",
@@ -47,7 +50,7 @@ FeatureScatter(gex,
   geom_vline(xintercept = 2500) +
   geom_hline(yintercept = 10) +
   scale_color_manual(values = tol_high_contrast_palette)
-ggsave("featureScatter_feature_mito.png")
+ggsave("FeatureScatter_nFeature_percentMito.png")
 
 FeatureScatter(gex,
                feature1 = "nCount_RNA",
@@ -56,12 +59,12 @@ FeatureScatter(gex,
   geom_vline(xintercept = 10000) +
   geom_hline(yintercept = 2500) +
   scale_color_manual(values = tol_high_contrast_palette)
-ggsave("featureScatter_count_feature.png")
+ggsave("FeatureScatter_nCount_nFeature.png")
+
 
 gex <- subset(gex, percent_mito <= 10)
 gex <- subset(gex, nCount_RNA <= 10000)
 gex <- subset(gex, nFeature_RNA >= 500)
-table(gex$orig.ident)
 
 gex <- NormalizeData(object = gex,
                      normalization.method = "LogNormalize",
@@ -87,7 +90,8 @@ DimPlot(object = gex,
         group.by = "orig.ident",
         shuffle = TRUE) +
   scale_color_manual(values = tol_high_contrast_palette)
-ggsave("DimPlot_pca.png")
+ggsave("DimPlot_PCA.png")
+
 
 gex <- FindNeighbors(object = gex,
                      reduction = "pca",
@@ -107,12 +111,13 @@ gex <- RunUMAP(object = gex,
 DimPlot(object = gex,
         reduction = "umap",
         group.by = "RNA_snn_res.1.5",
-        ncol = 2,
         shuffle = TRUE) +
   scale_color_manual(values = tol_muted_palette)
-ggsave("DimPlot_umap.png")
+ggsave("DimPlot_UMAP.png")
 
-# read in Velocyto loom files and reformat column names
+# Velocyto
+
+## Read in loom files
 
 reformatLoomColnames <- function(loomObject, assay, id){
   paste(substr(colnames(loomObject[[assay]]), 25, 40), id, sep = "-")
@@ -141,60 +146,61 @@ loom_aggregate <- lapply(c("spliced", "unspliced"), function(assay){
   do.call("cbind", lapply(loom_data,"[[", assay))
 })
 names(loom_aggregate) <- c("spliced", "unspliced")
-loom_seurat <- CreateSeuratObject(counts = loom_aggregate$spliced,
+vel <- CreateSeuratObject(counts = loom_aggregate$spliced,
                           project = "Advanced Topics Workshop",
                           assay = "spliced",
                           min.cells = 0,
                           min.features = 0,
                           names.field = 2,
                           names.delim = "\\-")
-loom_seurat[["unspliced"]] <- CreateAssayObject(counts = loom_aggregate$unspliced)
-
+vel[["unspliced"]] <- CreateAssayObject(counts = loom_aggregate$unspliced)
 
 ## Select cells used in gene expression analysis
 
-#If you did not run the initial Seurat section, this is where you would change the code to subset your cells in some other way, or simply use all cells.
-
-loom_seurat_filtered <- loom_seurat[rownames(gex), colnames(gex)]
+vel <- vel[rownames(gex), colnames(gex)]
 
 ## Run Seurat
 
-loom_seurat_filtered <- NormalizeData(loom_seurat_filtered,
-                                      verbose = FALSE)
-loom_seurat_filtered <- ScaleData(loom_seurat_filtered,
-                                  verbose = FALSE)
-loom_seurat_filtered <- RunPCA(loom_seurat_filtered,
-                               features = rownames(loom_seurat_filtered),
-                               verbose = FALSE)
-loom_seurat_filtered <- FindNeighbors(loom_seurat_filtered,
-                                      dims = 1:50,
-                                      verbose = FALSE)
-loom_seurat_filtered <- FindClusters(loom_seurat_filtered,
-                                     verbose = FALSE)
-loom_seurat_filtered <- RunUMAP(loom_seurat_filtered,
-                                dims = 1:50,
-                                verbose = FALSE)
+vel <- NormalizeData(vel, verbose = FALSE)
+vel <- ScaleData(vel, verbose = FALSE)
+vel <- RunPCA(vel, features = rownames(vel), verbose = FALSE)
+
+vel_reduction <- FindNeighbors(vel, dims = 1:50, verbose = FALSE)
+vel_reduction <- FindClusters(vel_reduction, verbose = FALSE)
+vel_reduction <- RunUMAP(vel_reduction, dims = 1:50, verbose = FALSE)
+
+vel_integrated <- vel
+vel_integrated@graphs[["RNA_nn"]] <- gex@graphs[["RNA_nn"]][colnames(vel),
+                                                            colnames(vel)]
+vel_integrated <- AddMetaData(object = vel_integrated,
+                              metadata = FetchData(gex,
+                                                   vars = "RNA_snn_res.1.5",
+                                                   cells = colnames(vel)),
+                              col.name = "gex.clusters")
+vel_integrated@reductions[["umap"]] <- CreateDimReducObject(embeddings = as.matrix(FetchData(gex, vars = c("UMAP_1", "UMAP_2"), cells = colnames(vel))), assay = "RNA")
 
 ## Run velocity analysis
 
-loom_seurat_filtered <- RunVelocity(loom_seurat_filtered,
-                           deltaT = 1,
-                           kCells = 25,
-                           fit.quantile = 0.02,
-                           verbose = FALSE)
+vel_reduction <- RunVelocity(vel_reduction,
+                             deltaT = 1,
+                             kCells = 25,
+                             fit.quantile = 0.02,
+                             verbose = FALSE)
 
 ident_colors <- tol_vibrant_palette
-names(ident_colors) <- levels(loom_seurat_filtered)
-cell_colors <- ident_colors[Idents(loom_seurat_filtered)]
-names(cell_colors) <- colnames(loom_seurat_filtered)
-
-pdf("show_velocity1.pdf")
-show.velocity.on.embedding.cor(emb = Embeddings(loom_seurat_filtered,
+names(ident_colors) <- levels(vel_reduction)
+cell_colors <- ident_colors[Idents(vel_reduction)]
+names(cell_colors) <- colnames(vel_reduction)
+show.velocity.on.embedding.cor(emb = Embeddings(vel_reduction,
                                                 reduction = "umap"),
-                               vel = Tool(loom_seurat_filtered,
+                               vel = Tool(vel_reduction,
                                           slot = "RunVelocity"),
                                n = 200,
                                scale = "sqrt",
+                               xlab = colnames(Embeddings(vel_reduction,
+                                                          reduction = "umap"))[1],
+                               ylab = colnames(Embeddings(vel_reduction,
+                                                          reduction = "umap"))[2],
                                cell.colors = ac(x = cell_colors, alpha = 0.5),
                                cex = 0.8,
                                arrow.scale = 3,
@@ -204,30 +210,27 @@ show.velocity.on.embedding.cor(emb = Embeddings(loom_seurat_filtered,
                                arrow.lwd = 1,
                                do.par = FALSE,
                                cell.border.alpha = 0.1)
-dev.off()
 
-# visualize clusters from initial Seurat object
-
-loom_seurat_filtered <- AddMetaData(object = loom_seurat_filtered,
-                                    metadata = gex$RNA_snn_res.1.5,
-                                    col.name = "gex.clusters")
-table(loom_seurat_filtered$gex.clusters,
-      loom_seurat_filtered$spliced_snn_res.0.8)
-
-ident_colors2 <- tol_muted_palette
-names(ident_colors2) <- levels(loom_seurat_filtered$gex.clusters)
-cell_colors2 <- ident_colors2[loom_seurat_filtered$gex.clusters]
-names(cell_colors2) <- colnames(loom_seurat_filtered)
-
-pdf("show_velocity2.pdf")
-show.velocity.on.embedding.cor(emb = Embeddings(loom_seurat_filtered,
+vel_integrated <- RunVelocity(vel_integrated,
+                             deltaT = 1,
+                             kCells = 25,
+                             fit.quantile = 0.02,
+                             verbose = FALSE)
+ident_colors <- tol_muted_palette
+names(ident_colors) <- levels(vel_integrated$gex.clusters)
+cell_colors <- ident_colors[vel_integrated$gex.clusters]
+names(cell_colors) <- colnames(vel_integrated)
+show.velocity.on.embedding.cor(emb = Embeddings(vel_integrated,
                                                 reduction = "umap"),
-                               vel = Tool(loom_seurat_filtered,
+                               vel = Tool(vel_integrated,
                                           slot = "RunVelocity"),
                                n = 200,
                                scale = "sqrt",
-                               cell.colors = ac(x = cell_colors2,
-                                                alpha = 0.5),
+                               xlab = colnames(Embeddings(vel_integrated,
+                                                          reduction = "umap"))[1],
+                               ylab = colnames(Embeddings(vel_integrated,
+                                                          reduction = "umap"))[2],
+                               cell.colors = ac(x = cell_colors, alpha = 0.5),
                                cex = 0.8,
                                arrow.scale = 3,
                                show.grid.flow = TRUE,
@@ -236,4 +239,5 @@ show.velocity.on.embedding.cor(emb = Embeddings(loom_seurat_filtered,
                                arrow.lwd = 1,
                                do.par = FALSE,
                                cell.border.alpha = 0.1)
-dev.off()
+
+sessionInfo()
