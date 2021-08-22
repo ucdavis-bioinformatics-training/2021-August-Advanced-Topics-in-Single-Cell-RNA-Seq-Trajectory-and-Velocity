@@ -1,5 +1,5 @@
 ---
-title: "Advanced Topics in Single Cell RNA-Seq: Trajectory and Velocity Analysis"
+title: "Advanced Topics in Single Cell RNA-Seq: Velocity Analysis"
 author: "Bioinformatics Core"
 output:
     html_document:
@@ -117,7 +117,7 @@ FeatureScatter(gex,
   scale_color_manual(values = tol_high_contrast_palette)
 ```
 
-![](trajectory_velocity_files/figure-html/seurat-1.png)<!-- -->
+![](Velocyto_files/figure-html/seurat-1.png)<!-- -->
 
 ```r
 FeatureScatter(gex,
@@ -129,7 +129,7 @@ FeatureScatter(gex,
   scale_color_manual(values = tol_high_contrast_palette)
 ```
 
-![](trajectory_velocity_files/figure-html/seurat-2.png)<!-- -->
+![](Velocyto_files/figure-html/seurat-2.png)<!-- -->
 
 ```r
 FeatureScatter(gex,
@@ -141,7 +141,7 @@ FeatureScatter(gex,
   scale_color_manual(values = tol_high_contrast_palette)
 ```
 
-![](trajectory_velocity_files/figure-html/seurat-3.png)<!-- -->
+![](Velocyto_files/figure-html/seurat-3.png)<!-- -->
 
 ```r
 gex <- subset(gex, percent_mito <= 10)
@@ -151,8 +151,8 @@ table(gex$orig.ident)
 ```
 
 ```
-## 
-## sample1 sample2 sample3 
+##
+## sample1 sample2 sample3
 ##    1855     999    1200
 ```
 
@@ -205,7 +205,7 @@ DimPlot(object = gex,
   scale_color_manual(values = tol_high_contrast_palette)
 ```
 
-![](trajectory_velocity_files/figure-html/seurat-4.png)<!-- -->
+![](Velocyto_files/figure-html/seurat-4.png)<!-- -->
 
 ```r
 gex <- FindNeighbors(object = gex,
@@ -220,9 +220,9 @@ sapply(grep("res", colnames(gex@meta.data), value = TRUE),
 ```
 
 ```
-## RNA_snn_res.0.25  RNA_snn_res.0.5 RNA_snn_res.0.75    RNA_snn_res.1 
-##                4                6                6                7 
-## RNA_snn_res.1.25  RNA_snn_res.1.5 RNA_snn_res.1.75    RNA_snn_res.2 
+## RNA_snn_res.0.25  RNA_snn_res.0.5 RNA_snn_res.0.75    RNA_snn_res.1
+##                4                6                6                7
+## RNA_snn_res.1.25  RNA_snn_res.1.5 RNA_snn_res.1.75    RNA_snn_res.2
 ##                9                9               12               12
 ```
 
@@ -247,7 +247,7 @@ DimPlot(object = gex,
   scale_color_manual(values = tol_muted_palette)
 ```
 
-![](trajectory_velocity_files/figure-html/seurat-5.png)<!-- -->
+![](Velocyto_files/figure-html/seurat-5.png)<!-- -->
 
 # Velocyto
 
@@ -325,8 +325,8 @@ gex
 ```
 
 ```
-## An object of class Seurat 
-## 36601 features across 4054 samples within 1 assay 
+## An object of class Seurat
+## 36601 features across 4054 samples within 1 assay
 ## Active assay: RNA (36601 features, 0 variable features)
 ##  2 dimensional reductions calculated: pca, umap
 ```
@@ -336,8 +336,8 @@ vel
 ```
 
 ```
-## An object of class Seurat 
-## 73202 features across 4301 samples within 2 assays 
+## An object of class Seurat
+## 73202 features across 4301 samples within 2 assays
 ## Active assay: spliced (36601 features, 0 variable features)
 ##  1 other assay present: unspliced
 ```
@@ -436,7 +436,7 @@ show.velocity.on.embedding.cor(emb = Embeddings(vel_reduction,
                                cell.border.alpha = 0.1)
 ```
 
-![](trajectory_velocity_files/figure-html/runVelocity-1.png)<!-- -->
+![](Velocyto_files/figure-html/runVelocity-1.png)<!-- -->
 
 ```
 ## delta projections ... sqrt knn ... transition probs ... done
@@ -478,7 +478,7 @@ show.velocity.on.embedding.cor(emb = Embeddings(vel_integrated,
                                cell.border.alpha = 0.1)
 ```
 
-![](trajectory_velocity_files/figure-html/runVelocityIntegrated-1.png)<!-- -->
+![](Velocyto_files/figure-html/runVelocityIntegrated-1.png)<!-- -->
 
 ```
 ## delta projections ... sqrt knn ... transition probs ... done
@@ -497,21 +497,21 @@ sessionInfo()
 ## R version 4.0.3 (2020-10-10)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
 ## Running under: macOS Big Sur 10.16
-## 
+##
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
 ## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
-## 
+##
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-## 
+##
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
-## 
+##
 ## other attached packages:
 ## [1] SeuratWrappers_0.3.0 velocyto.R_0.6       Matrix_1.3-4        
 ## [4] ggplot2_3.3.5        Seurat_4.0.3         SeuratObject_4.0.2  
-## 
+##
 ## loaded via a namespace (and not attached):
 ##   [1] Rtsne_0.15            colorspace_2.0-2      deldir_0.2-10        
 ##   [4] ellipsis_0.3.2        ggridges_0.5.3        spatstat.data_2.1-0  
